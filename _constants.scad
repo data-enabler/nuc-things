@@ -24,7 +24,9 @@ opening_to_bottom = 6.45;
 interior_depth = 106.5 -1;
 sodimm_to_chassis = 8;
 
+// Yuan SC550N4 M2 HDMI
 // HDMI jack boards
+// https://www.yuan.com.tw/products/capture/m2/sc550n4_m2_type-b-m_hdmi.htm
 board_width = 33.6;
 board_depth = 30;
 board_height = 1.65;
