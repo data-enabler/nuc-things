@@ -61,6 +61,16 @@ module heatsink_brackets() {
       cube([rear_vent_width, post_to_chassis*2, bracket_height*2], center=true);
     }
 
+    // Some more clearance for the heatsink heat pipes
+    for (y = [-1, 1]) {
+      width = 60;
+      inset = 8.5; // from inner edge
+      height = 3;
+      translate([0, y * (mobo_screw_distance_y/2 - post_to_chassis), 0]) {
+        cube([width, inset*2, bracket_height*2], center=true);
+      }
+    }
+
     // CPU fan attachment post
     translate([-mobo_screw_distance_x/2 + 6, -mobo_screw_distance_y/2 + 5, inner_chassis_to_mobo]) {
       mirror([0, 0, 1]) cylinder(d=ceil(5.5), h=5, center=false);
