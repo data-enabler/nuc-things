@@ -20,7 +20,7 @@ m4_diameter = 4;
 m4_insert_diameter = 5.5;
 m4_insert_depth = 4;
 
-post_diameter = 8;
+post_diameter = 8; // Matches the circle printed around it
 
 // This is the height (measuring from the top of the chassis) at which the
 // heatsink mounting bracket and our motherboard bracket connect
@@ -45,12 +45,10 @@ module heatsink_brackets() {
   difference() {
     union() {
       translate([-mobo_screw_distance_x/2, 0, 0]) {
-        chassis_post();
         chassis_bracket();
       }
       translate([mobo_screw_distance_x/2, 0, 0]) {
         mirror([1, 0, 0]) {
-          chassis_post();
           chassis_bracket();
         }
       }
@@ -90,25 +88,6 @@ module heatsink_brackets() {
   }
 }
 
-module chassis_post() {
-  difference() {
-    for (y = [-1, 1]) {
-      translate([0, y * mobo_screw_distance_y/2, 0]) {
-        cylinder(d=post_diameter, h=inner_chassis_to_mobo, center=false);
-      }
-    }
-    chassis_post_holes();
-  }
-}
-
-module chassis_post_holes() {
-  for (y = [-1, 1]) {
-    translate([0, y * mobo_screw_distance_y/2, 0]) {
-      cylinder(d=m2_5_insert_diameter, h=inner_chassis_to_mobo*3, center=true);
-    }
-  }
-}
-
 module chassis_bracket() {
   difference() {
     union() {
@@ -136,6 +115,10 @@ module chassis_bracket() {
       translate([0, -mobo_screw_distance_y/2, 0]) {
         cube([mobo_screw_distance_x/2 - heatsink_mounting_bracket_inner_width/2, mobo_screw_distance_y, main_height]);
       }
+
+      mobo_mounting_post();
+
+      chassis_post();
     }
 
     // Cutout for heatsink bracket
@@ -157,7 +140,45 @@ module chassis_bracket() {
       }
     }
 
+    mobo_mounting_post_hole();
+
     chassis_post_holes();
+  }
+}
+
+module mobo_mounting_post() {
+  translate([-mobo_screw2_offset_x, mobo_screw_distance_y/2 - mobo_screw2_offset_y, inner_chassis_to_mobo]) {
+    // Using the same diameter as the other posts would come right up against a component
+    mirror([0, 0, 1]) {
+      cylinder(d=post_diameter-0.5, h=inner_chassis_mobo_min_clearance, center=false);
+    }
+  }
+}
+
+module mobo_mounting_post_hole() {
+  translate([-mobo_screw2_offset_x, mobo_screw_distance_y/2 - mobo_screw2_offset_y, inner_chassis_to_mobo]) {
+    mirror([0, 0, 1]) {
+      cylinder(d=m2_5_insert_diameter, h=m2_5_insert_depth*2, center=true);
+    }
+  }
+}
+
+module chassis_post() {
+  difference() {
+    for (y = [-1, 1]) {
+      translate([0, y * mobo_screw_distance_y/2, 0]) {
+        cylinder(d=post_diameter, h=inner_chassis_to_mobo, center=false);
+      }
+    }
+    chassis_post_holes();
+  }
+}
+
+module chassis_post_holes() {
+  for (y = [-1, 1]) {
+    translate([0, y * mobo_screw_distance_y/2, 0]) {
+      cylinder(d=m2_5_insert_diameter, h=inner_chassis_to_mobo*3, center=true);
+    }
   }
 }
 
