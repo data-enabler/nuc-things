@@ -9,7 +9,7 @@ shim_depth = 40;
 shim_height = 1.2; // Ideally 2mm or more, but this should work with the right cooler. Yeehaw.
 
 die_frame_size = 2;
-die_frame_height = shim_height- 0.2;
+die_frame_height = shim_height- 0.4;
 
 module shim_bracket() {
   rotate([180, 0, 0]) {
@@ -30,17 +30,22 @@ module screw_holes() {
 module screw_hole() {
   height = die_frame_height + die_to_screw;
   width = heatsink_screw_size*2;
-  translate([heatsink_screw_spacing_x/2, heatsink_screw_spacing_y/2, -height]) {
+  screw_head_thickness = 0.8;
+  screw_head_diameter = 4.5;
+  translate([heatsink_screw_spacing_x/2, heatsink_screw_spacing_y/2, 0]) {
     difference() {
-      linear_extrude(height=height) {
-        polygon([
-          [width/2, -width/2],
-          [width/2, width/2],
-          [-(heatsink_screw_spacing_x/2 - die_width/2 - die_frame_size), (heatsink_screw_to_die_end + die_frame_size)],
-          [-(heatsink_screw_spacing_x/2 - die_width/2 - die_frame_size), -(heatsink_screw_to_die_end + die_frame_size)],
-        ]);
+      translate([0, 0, -height]) {
+        linear_extrude(height=height) {
+          polygon([
+            [width/2, -width/2],
+            [width/2, width/2],
+            [-(heatsink_screw_spacing_x/2 - die_width/2 - die_frame_size), (heatsink_screw_to_die_end + die_frame_size)],
+            [-(heatsink_screw_spacing_x/2 - die_width/2 - die_frame_size), -(heatsink_screw_to_die_end + die_frame_size)],
+          ]);
+        }
       }
       cylinder(d=heatsink_screw_size, h=height*3, center=true);
+      cylinder(d1=0, d2=screw_head_diameter*2, h=screw_head_diameter, center=true);
     }
   }
 }
