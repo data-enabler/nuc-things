@@ -4,6 +4,12 @@ include <_constants.scad>;
 // components on the PCB get in the way. So we need some kind of metal shim.
 // Unfortunately nobody seems to sell copper shims in rectangular sizes, but we
 // can make do with two square ones.
+//
+// It's nice to be able to do this with store-bought parts, but ideally this
+// would be a custom-machined rectangular heatspreader that has some kind of lip
+// that a retaining bracket can be attached to. As it stands, these will
+// definitely remain stuck to the bottom of your heatsink if you ever try to
+// remove it.
 shim_width = 20;
 shim_depth = 40;
 shim_height = 1.2; // Ideally 2mm or more, but this should work with the right cooler. Yeehaw.

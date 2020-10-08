@@ -14,7 +14,7 @@ heatsink_mounting_bracket_inner_width = heatsink_mounting_screw_distance*2 - hea
 heatsink_mounting_bracket_height = heatsink_mount_height - 1.8;
 heatsink_mounting_bracket_thickness = 2;
 
-m2_5_insert_diameter = 3;
+m2_5_insert_diameter = 3; // TODO: This is too small
 m2_5_insert_depth = 5;
 m4_diameter = 4;
 m4_insert_diameter = 5.5;
@@ -35,6 +35,9 @@ bracket_height = inner_chassis_to_mobo
 main_height = inner_chassis_to_mobo - inner_chassis_mobo_min_clearance;
 
 // Using the same distance for every side, just for convenience
+// TODO: There's not enough clearance in the front of the chassis for the power
+// button to work. It's probably due to the threaded inserts being
+// mispositioned, but this might be a contributing factor.
 post_to_chassis = min(
   inner_chassis_to_post_x,
   inner_chassis_to_post_y_1,
@@ -62,6 +65,7 @@ module heatsink_brackets() {
     }
 
     // Some more clearance for the heatsink heat pipes
+    // TODO: More clearance on slice 2
     for (y = [-1, 1]) {
       width = 60;
       inset = 8.5; // from inner edge
@@ -95,6 +99,8 @@ module heatsink_brackets() {
     translate([mobo_screw_distance_x/2 - 15.5, -mobo_screw_distance_y/2 + 2, inner_chassis_to_mobo]) {
       mirror([0, 0, 1]) cube([11, 6, 8]);
     }
+
+    // TODO: Cutouts for reattaching side panels
   }
 }
 
@@ -215,6 +221,8 @@ module slice_connectors(diameter) {
   }
 }
 
+// TODO: These slices need to be bolted to each other somehow, otherwise there's
+// not enough holding the chassis to the heatsink + motherboard unit.
 module slice1() {
   difference() {
     heatsink_brackets();
